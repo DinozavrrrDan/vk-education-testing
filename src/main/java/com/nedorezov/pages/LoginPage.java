@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class LoginPage extends BasePage {
@@ -18,9 +19,9 @@ public class LoginPage extends BasePage {
     }
 
     public String login(String email, String password) {
-        loginField.setValue(email);
-        passwordField.setValue(password);
-        signInButton.click();
+        loginField.shouldBe(visible).setValue(email);
+        passwordField.shouldBe(visible).setValue(password);
+        signInButton.shouldBe(visible).click();
         String[] data = Objects.requireNonNull(okPage.getAttribute("data-l")).split(",");
         return data[data.length - 1];
     }
