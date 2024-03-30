@@ -1,4 +1,4 @@
-package com.nedorezov;
+package com.nedorezov.config;
 
 public class Config {
     public static final String BASE_URL = "https://ok.ru";

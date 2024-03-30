@@ -4,8 +4,8 @@ import com.nedorezov.core.LoginPage;
 import com.nedorezov.core.MainPage;
 import org.junit.jupiter.api.Test;
 
-import static com.nedorezov.Config.PASSWORD;
-import static com.nedorezov.Config.LOGIN;
+import static com.nedorezov.config.Config.PASSWORD;
+import static com.nedorezov.config.Config.LOGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWithCorrectLoginAndPasswordBotTest extends LoginPageBaseTest {

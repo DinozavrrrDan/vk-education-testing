@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.nedorezov.Config.LOGIN;
+import static com.nedorezov.config.Config.LOGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWithIncorrectPasswordTest extends LoginPageBaseTest {

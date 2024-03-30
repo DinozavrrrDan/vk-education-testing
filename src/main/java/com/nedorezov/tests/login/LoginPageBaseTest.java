@@ -4,7 +4,7 @@ import com.codeborne.selenide.Selenide;
 import com.nedorezov.tests.BaseTest;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.nedorezov.Config.*;
+import static com.nedorezov.config.Config.*;
 
 public class LoginPageBaseTest extends BaseTest {
     @BeforeEach

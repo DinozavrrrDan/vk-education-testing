@@ -3,7 +3,7 @@ package com.nedorezov.tests.login;
 import com.nedorezov.core.LoginPage;
 import org.junit.jupiter.api.Test;
 
-import static com.nedorezov.Config.LOGIN;
+import static com.nedorezov.config.Config.LOGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWithEmptyPasswordFieldTest extends LoginPageBaseTest {

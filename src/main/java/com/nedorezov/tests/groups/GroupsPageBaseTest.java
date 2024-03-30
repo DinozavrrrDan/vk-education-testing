@@ -6,7 +6,7 @@ import com.nedorezov.core.MainPage;
 import com.nedorezov.tests.BaseTest;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.nedorezov.Config.*;
+import static com.nedorezov.config.Config.*;
 
 public class GroupsPageBaseTest extends BaseTest {
     @BeforeEach
