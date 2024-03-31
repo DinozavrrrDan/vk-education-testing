@@ -2,14 +2,14 @@ package com.nedorezov.core;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
 
 public abstract class BasePage {
+    private static final String NOT_VISIBLE_REQUIRED_PAGE_ELEMENT = "Не отображается один из обязательных элементов страницы.";
+
     private final List<SelenideElement> requiredPageElements;
 
     protected BasePage(List<SelenideElement> requiredPageElements) {
@@ -18,7 +18,7 @@ public abstract class BasePage {
     }
 
     public void checkPage() {
-        requiredPageElements.forEach(el -> el.shouldBe(visible));
+        requiredPageElements.forEach(el -> el.shouldBe(visible.because(NOT_VISIBLE_REQUIRED_PAGE_ELEMENT)));
     }
 
     public void refreshPage() {

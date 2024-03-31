@@ -10,10 +10,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
 
     implementation 'com.codeborne:selenide:7.2.1'
+    implementation 'org.slf4j:slf4j-simple:2.0.12'
     implementation("io.github.bonigarcia:webdrivermanager:5.7.0")
 
     implementation platform('org.junit:junit-bom:5.9.1')

@@ -26,32 +26,37 @@ public class GroupsPage extends BasePage {
             By.xpath(".//*[@class='group-detailed-card_name']");
     private static final By groupPhotoBlock =
             By.xpath(".//*[@data-l='t,visit']");
+    private static final String NOT_VISIBLE_GROUP_PHOTO = "Не отображается фотография группы.";
+    private static final String NOT_VISIBLE_GO_TO_GROUP_BUTTON = "Не отображается кнопка перехода в группу.";
+    private static final String NOT_VISIBLE_GROUP_SEARCH_FIELD = "Не отображается поле поиска группы.";
+    private static final String NOT_VISIBLE_GROUP = "Не отображается группа.";
+    private static final String NOT_FOUND_GROUPS_ON_PAGE = "Не найдено ни одной группы на странице.";
 
     public GroupsPage() {
         super(List.of(groupCatalogHeader, groupCatalog));
     }
 
     public String searchForGroup(String groupName) {
-        searchGroupField.shouldBe(visible).setValue(groupName);
-        searchGroupField.shouldBe(visible).sendKeys(Keys.ENTER);
+        searchGroupField.shouldBe(visible.because(NOT_VISIBLE_GROUP_SEARCH_FIELD)).setValue(groupName);
+        searchGroupField.shouldBe(visible.because(NOT_VISIBLE_GROUP_SEARCH_FIELD)).sendKeys(Keys.ENTER);
         return getNameOfFirstGroupOnGroupsPage();
     }
 
     public String getGroupName(SelenideElement group) {
-        return group.find(groupName).getText();
+        return group.find(groupName).shouldBe(visible.because(NOT_VISIBLE_GROUP)).getText();
     }
 
     public String getNameOfFirstGroupOnGroupsPage() {
         return getGroupName(allGroupsOnRecommendedGroupsPage
-                .shouldHave(CollectionCondition.sizeGreaterThan(0))
+                .shouldHave(CollectionCondition.sizeGreaterThan(0).because(NOT_FOUND_GROUPS_ON_PAGE))
                 .first());
     }
 
     public void navigateToGroup(String groupName) {
         allGroupsOnRecommendedGroupsPage.findBy(text(groupName))
                 .find(groupPhotoBlock)
-                .shouldBe(visible).click();
-        goToGroupButton.shouldBe(visible).click();
+                .shouldBe(visible.because(NOT_VISIBLE_GROUP_PHOTO)).click();
+        goToGroupButton.shouldBe(visible.because(NOT_VISIBLE_GO_TO_GROUP_BUTTON)).click();
     }
 
 

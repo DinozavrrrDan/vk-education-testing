@@ -1,7 +1,6 @@
 package com.nedorezov.core;
 
 import com.codeborne.selenide.SelenideElement;
-import com.nedorezov.core.BasePage;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -19,16 +18,22 @@ public class MainPage extends BasePage {
             $(By.xpath(".//*[@data-l='t,userAltGroup' and contains(@class, 'nav-side_i')]"));
     private static final SelenideElement userPageNameInNavigationBlock =
             $(By.xpath(".//*[@data-l='t,userPage' and contains(@class, 'nav-side_i')]/div[@class='tico ellip']"));
+    private static final String NOT_VISIBLE_GROUP_BUTTON_ON_NAVIGATION_PANEL =
+            "Не отображается кнопка \"Группы\" на боковой навигационной панели.";
+    private static final String NOT_VISIBLE_USERNAME_ON_NAVIGATION_PANEL =
+            "Не отображается имя пользователя на боковой навигационной панели.";
 
     public MainPage() {
         super(List.of(mainPageFeed, mainPageBlockOfAlternativeContent));
     }
 
     public void openGroupsPageFromNavigationBlock() {
-        groupsButtonInNavigationBlock.shouldBe(visible).click();
+        groupsButtonInNavigationBlock.shouldBe(visible.because(NOT_VISIBLE_GROUP_BUTTON_ON_NAVIGATION_PANEL)).click();
     }
 
     public String getUserNameFromNavigationBlock() {
-        return userPageNameInNavigationBlock.shouldBe(visible).getText();
+        return userPageNameInNavigationBlock
+                .shouldBe(visible.because(NOT_VISIBLE_USERNAME_ON_NAVIGATION_PANEL))
+                .getText();
     }
 }
