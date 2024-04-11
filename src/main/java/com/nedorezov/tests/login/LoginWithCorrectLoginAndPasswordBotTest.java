@@ -5,6 +5,9 @@ import com.nedorezov.core.pages.main.MainPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.nedorezov.config.Config.PASSWORD;
 import static com.nedorezov.config.Config.LOGIN;
@@ -22,6 +25,7 @@ public class LoginWithCorrectLoginAndPasswordBotTest extends LoginPageBaseTest {
     @Test
     @Tag("login")
     @DisplayName("Login with correct login and password test")
+    @Timeout(value = 60)
     public void testLoginWithCorrectLoginAndPassword() {
         LoginPage loginPage = new LoginPage();
 
