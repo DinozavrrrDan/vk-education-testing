@@ -1,8 +1,9 @@
 package com.nedorezov.tests.groups;
 
-import com.nedorezov.core.GroupPage;
-import com.nedorezov.core.GroupsPage;
-import com.nedorezov.core.MainPage;
+import com.nedorezov.core.pages.group.GroupPage;
+import com.nedorezov.core.pages.groups.GroupsPage;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +14,8 @@ public class NavigateToGroupPageFromGroupsPageTest extends GroupsPageBaseTest {
             "Имя группы в которую необходимо перейти не совпало с ожидаемым.";
 
     @Test
+    @Tag("groups")
+    @DisplayName("Navigate to group page from groups page test")
     public void testNavigateToGroupPageFromGroupsPage() {
         GroupsPage groupsPage = new GroupsPage();
         String findGroupName = groupsPage.getNameOfFirstGroupOnGroupsPage();

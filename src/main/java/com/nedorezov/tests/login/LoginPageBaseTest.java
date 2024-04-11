@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static com.nedorezov.config.Config.*;
 
-public class LoginPageBaseTest extends BaseTest {
+public abstract class LoginPageBaseTest extends BaseTest {
     @BeforeEach
     void openLoginPage() {
         Selenide.open(BASE_URL);

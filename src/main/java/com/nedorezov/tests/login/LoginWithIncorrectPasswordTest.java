@@ -1,29 +1,27 @@
 package com.nedorezov.tests.login;
 
-import com.codeborne.selenide.SelenideElement;
-import com.nedorezov.core.LoginPage;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
+import com.nedorezov.core.pages.login.LoginPage;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.nedorezov.config.Config.LOGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWithIncorrectPasswordTest extends LoginPageBaseTest {
-    private static final SelenideElement failLogInTextField = $(By.xpath(".//*[@class='form_i form_i__error']"));
     private static final String INCORRECT_USER_NAME_OR_PASSWORD_ERROR_MESSAGE = "Неправильно указан логин и/или пароль";
-    private static final String INCORRECT_PASSWORD = "INCORRECT PASSWORD";
     private static final String ASSERTION_FAIL_MESSAGE = "Сообщение об ошибке при неправильном вводе пароля не совпадает с ожидаемой.";
 
-    @Test
-    public void testLoginInWithIncorrectPassword() {
+    @ParameterizedTest(name = "Login with incorrect password test")
+    @ValueSource(strings = "incorrect password")
+    @Tag("login")
+    public void testLoginInWithIncorrectPassword(String password) {
         LoginPage loginPage = new LoginPage();
 
-        loginPage.login(LOGIN, INCORRECT_PASSWORD);
-        failLogInTextField.shouldBe(visible);
+        loginPage.login(LOGIN, password);
 
-        assertEquals(INCORRECT_USER_NAME_OR_PASSWORD_ERROR_MESSAGE, failLogInTextField.getText(),
+        assertEquals(INCORRECT_USER_NAME_OR_PASSWORD_ERROR_MESSAGE, loginPage.getTextFromFailLoginBlock(),
                 ASSERTION_FAIL_MESSAGE);
     }
 }

@@ -1,7 +1,9 @@
 package com.nedorezov.tests.login;
 
-import com.nedorezov.core.LoginPage;
-import com.nedorezov.core.MainPage;
+import com.nedorezov.core.pages.login.LoginPage;
+import com.nedorezov.core.pages.main.MainPage;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static com.nedorezov.config.Config.PASSWORD;
@@ -14,8 +16,12 @@ public class LoginWithCorrectLoginAndPasswordBotTest extends LoginPageBaseTest {
             "с помощью которог необходимо было зайти." +
             " P.S. Этот тест предназначен для ботов, т.к. у них дублируются имена";
 
-    //Тест предназначен для ботов т.к. у них дублируется имя
+    /**
+     * Тест предназначен для ботов т.к. у них дублируется имя
+     */
     @Test
+    @Tag("login")
+    @DisplayName("Login with correct login and password test")
     public void testLoginWithCorrectLoginAndPassword() {
         LoginPage loginPage = new LoginPage();
 
