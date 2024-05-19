@@ -13,21 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWithEmptyPasswordFieldTest extends LoginPageBaseTest {
 
-
-    public static final String ASSERTION_FAIL_MESSAGE =
-            "Сообщение об ошибке при вводе пустого пароля не совпадает с ожидаемой.";
-    private static final String EMPTY_PASSWORD_ERROR_MESSAGE = "Введите пароль";
-
     @ParameterizedTest(name = "Login with empty password field test")
     @EmptySource
     @Tag("login")
     @Timeout(value = 60)
     public void testLoginWithEmptyPasswordField(String password) {
         LoginPage loginPage = new LoginPage();
-        loginPage.login(LOGIN, password);
+        loginPage.login(BOT.name(), password);
 
-        assertEquals(EMPTY_PASSWORD_ERROR_MESSAGE, loginPage.getTextFromFailLoginBlock(),
-                ASSERTION_FAIL_MESSAGE);
+        assertEquals("Введите пароль", loginPage.getTextFromFailLoginBlock(),
+                "Сообщение об ошибке при вводе пустого пароля не совпадает с ожидаемой.");
     }
 }
 

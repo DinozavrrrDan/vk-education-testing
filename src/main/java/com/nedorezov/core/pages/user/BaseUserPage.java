@@ -17,7 +17,7 @@ public abstract class BaseUserPage extends BasePage {
     private static final By blockAboutUser = By.xpath(".//*[@id='hook_Block_AboutUserRB']");
 
     protected BaseUserPage(List<By> requiredPageElements) {
-        super(createListOfRequiredPageElements(requiredPageElements));
+//        super(createListOfRequiredPageElements(requiredPageElements));
     }
 
     private static List<By> createListOfRequiredPageElements(List<By> requiredPageElements) {

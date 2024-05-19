@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SearchGroupTest extends GroupsPageBaseTest {
-    private static final String ASSERTION_FAIL_MESSAGE = "При поиске группы ожидаемое и полученное название не совпали.";
 
     @Test
     @Tag("groups")
@@ -20,7 +19,8 @@ public class SearchGroupTest extends GroupsPageBaseTest {
     public void testSearchingGroup() {
         GroupsPage groupsPage = new GroupsPage();
         String findGroupName = groupsPage.getNameOfFirstGroupOnGroupsPage();
-        assertEquals(findGroupName, groupsPage.searchForGroup(findGroupName), ASSERTION_FAIL_MESSAGE);
+        assertEquals(findGroupName, groupsPage.searchForGroup(findGroupName),
+                "При поиске группы ожидаемое и полученное название не совпали.");
     }
 
 }

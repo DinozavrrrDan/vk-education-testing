@@ -19,14 +19,13 @@ public class GroupPage extends BasePage {
     private static final By groupNameFromHeaderBlock =
             By.xpath(".//*[@class='group-name_h']");
 
-    private static final String NOT_VISIBLE_GROUP_NAME = "Название группы не отображается.";
 
     public GroupPage() {
-        super(List.of(groupFeedList, groupHeaderBlock, groupColumnBlock));
+//        super(List.of(groupFeedList, groupHeaderBlock, groupColumnBlock));
     }
 
     public String getGroupName() {
-        return $(groupNameFromHeaderBlock).shouldBe(visible.because(NOT_VISIBLE_GROUP_NAME)).getText();
+        return $(groupNameFromHeaderBlock).shouldBe(visible.because("Название группы не отображается.")).getText();
     }
 
 }

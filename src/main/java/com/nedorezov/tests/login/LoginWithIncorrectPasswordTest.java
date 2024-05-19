@@ -13,19 +13,15 @@ import static com.nedorezov.config.Config.LOGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginWithIncorrectPasswordTest extends LoginPageBaseTest {
-    private static final String INCORRECT_USER_NAME_OR_PASSWORD_ERROR_MESSAGE = "Неправильно указан логин и/или пароль";
-    private static final String ASSERTION_FAIL_MESSAGE = "Сообщение об ошибке при неправильном вводе пароля не совпадает с ожидаемой.";
-
     @ParameterizedTest(name = "Login with incorrect password test")
     @ValueSource(strings = "incorrect password")
     @Tag("login")
     @Timeout(value = 60)
     public void testLoginInWithIncorrectPassword(String password) {
         LoginPage loginPage = new LoginPage();
+        loginPage.login(BOT.name(), password);
 
-        loginPage.login(LOGIN, password);
-
-        assertEquals(INCORRECT_USER_NAME_OR_PASSWORD_ERROR_MESSAGE, loginPage.getTextFromFailLoginBlock(),
-                ASSERTION_FAIL_MESSAGE);
+        assertEquals("Неправильно указан логин и/или пароль", loginPage.getTextFromFailLoginBlock(),
+                "Сообщение об ошибке при неправильном вводе пароля не совпадает с ожидаемой.");
     }
 }

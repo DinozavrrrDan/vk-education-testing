@@ -14,19 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EditRecordTest extends RecordBaseTest {
 
-    public static final String ASSERTION_FAIL_MESSAGE = "При изменении записи ожидаемый и полученный текст записи не совпали.";
-
     @ParameterizedTest(name = "Test editing record")
     @MethodSource("editingRecordParameters")
     @Tag("records")
     @Timeout(value = 120)
     public void editingRecordTest(String text, String editText) {
         RecordsPage recordsPage = new RecordsPage();
-        recordsPage.publishRecord(text);
-        recordsPage.editLastRecord(editText);
-        recordsPage.refreshPage();
+        recordsPage.publishRecord(text)
+                .editLastRecord(editText)
+                .refreshPage();
 
-        assertEquals(editText, recordsPage.getLastRecordText(), ASSERTION_FAIL_MESSAGE);
+        assertEquals(editText, recordsPage.getLastRecordText(), "При изменении записи ожидаемый и полученный текст записи не совпали.");
 
         recordsPage.deleteLastRecord();
     }

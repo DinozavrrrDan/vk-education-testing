@@ -1,18 +1,18 @@
 package com.nedorezov.core.pages.records;
 
 import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.nedorezov.core.BasePage;
+import com.nedorezov.core.pages.records.elements.RecordCardWrapper;
 import org.openqa.selenium.By;
-
-import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Condition.empty;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.nedorezov.core.pages.records.RecordsPageInfoMessages.*;
 import static com.nedorezov.core.pages.records.RecordsOption.DELETE;
 import static com.nedorezov.core.pages.records.RecordsOption.EDIT;
 
@@ -26,74 +26,75 @@ public class RecordsPage extends BasePage {
             By.xpath(".//*[@class='feed']");
     private static final By recordTopicDisplay =
             By.xpath(".//*[@id='hook_Block_MediaTopicDisplayTypeFilter']");
-    private static final By recordOptionButton =
-            By.xpath(".//*[@class='feed_menu_ic']");
-    private static final By recordOptionMenu =
-            By.xpath(".//*[contains(@class,'u-menu_li')]");
-    private static final By recordDeleteInfo =
+
+
+    private static final By RECORD_DELETE_INFO =
             By.xpath(".//*[contains(@class,'delete-stub_info')]");
     private static final By inputTextFieldInPublishRecordMenu =
             By.xpath(".//*[@data-module='postingForm/mediaText']/div");
     private static final By recordShareButton =
             By.xpath(".//*[contains(@class, 'posting_submit') and text()='Поделиться']");
-    private static final By recordSaveButton =
-            By.xpath(".//*[@title='Сохранить']");
-    private static final By recordTextField =
-            By.xpath(".//*[@class='media-text_cnt']");
+
+
     private static final By closeRecordButton =
-            By.xpath(".//*[contains(@class, 'svg-ico_close_thin_16 media-layer_close_ico-svg')]");
+            By.xpath(".//*[contains(@class, 'close-button-icon')]");
 
     public RecordsPage() {
-        super(List.of(createRecordForm, recordsMainFeed, recordTopicDisplay));
+        check();
     }
 
-    public void publishRecord(String text) {
-        $(createRecordForm).shouldBe(visible.because(NOT_VISIBLE_CREATION_RECORD_FORM))
+    public boolean check() {
+        $(createRecordForm)
+                .shouldBe(visible.because("Не отображается форма создания записи."));
+        $(recordsMainFeed)
+                .shouldBe(visible.because("Не отображается фид."));
+        $(recordTopicDisplay)
+                .shouldBe(visible.because("Не отображается дисплей записей."));
+        return true;
+    }
+
+    public RecordsPage publishRecord(String text) {
+        $(createRecordForm).shouldBe(visible.because("Не отображается форма создания записи."))
                 .click();
         $(inputTextFieldInPublishRecordMenu)
-                .shouldBe(visible.because(NOT_VISIBLE_INPUT_FIELD_IN_RECORD))
-                .shouldBe(empty.because(INPUT_TEXT_FIELD_SHOULD_BE_EMPTY))
+                .shouldBe(visible.because("Не отображается поле ввода текста записи."))
+                .shouldBe(empty.because("Поле ввода текста должно быть пустым"))
                 .setValue(text);
-        $(recordShareButton).shouldBe(visible.because(NOT_VISIBLE_SHARE_BUTTON))
+        $(recordShareButton).shouldBe(visible.because("Не отображается кнопка \"Поделиться\" в форме создания записи"))
                 .click();
+        return this;
     }
 
     public String getLastRecordText() {
-        return getLastRecord()
-                .find(recordTextField).shouldBe(visible.because(NOT_VISIBLE_RECORD_TEXT_FIELD))
-                .getText();
+        return getLastRecordWrapper().getRecordText();
     }
 
-    private static SelenideElement getLastRecord() {
-        return $$(recordsFeed)
-                .shouldHave(CollectionCondition.sizeGreaterThan(0).because(NOT_FOUND_RECORDS_ON_PAGE))
-                .first().shouldBe(visible.because(NOT_VISIBLE_LAST_RECORD));
+    private RecordCardWrapper getLastRecordWrapper() {
+        SelenideElement record = getGroupCardCollection()
+                .first().shouldBe(visible.because("Не отображается полследняя запись на странице"));
+        return new RecordCardWrapper(record);
     }
 
-    public void deleteLastRecord() {
-        openRecordOption(DELETE);
-        $(recordDeleteInfo).shouldBe(visible.because(NOT_VISIBLE_RECORD_DELETE_BUTTON));
+    public RecordsPage deleteLastRecord() {
+        getLastRecordWrapper().deleteRecord();
+        $(RECORD_DELETE_INFO).shouldBe(visible.because("Не отображается всплывающие поле \"Запись удалена\""));
+        return this;
     }
 
-    public void editLastRecord(String textForEditing) {
-        openRecordOption(EDIT);
-        $(inputTextFieldInPublishRecordMenu).shouldBe(visible.because(NOT_VISIBLE_INPUT_FIELD_IN_RECORD))
-                .setValue(textForEditing);
-        $(recordSaveButton).shouldBe(visible.because(NOT_VISIBLE_SAVE_BUTTON))
-                .click();
-
+    public RecordsPage editLastRecord(String textForEditing) {
+        getLastRecordWrapper().editRecord(textForEditing);
         refreshPage();
-
-        $(closeRecordButton).shouldBe(visible.because(NOT_VISIBLE_CLOSE_RECORD_BUTTON))
+        $(closeRecordButton).shouldBe(visible.because("Не отображается кнопка ( крестик ) для закрытия записи."))
                 .click();
+        return this;
     }
 
-    private static void openRecordOption(RecordsOption option) {
-        getLastRecord().find(recordOptionButton).shouldBe(visible.because(NOT_VISIBLE_OPTION_RECORD_BUTTON))
-                .click();
-        $$(recordOptionMenu)
-                .findBy(text(option.getOption())).shouldBe(visible.because(NOT_VISIBLE_OPTION_BUTTON + option))
-                .click();
+    public ElementsCollection getGroupCardCollection() {
+        return $$(recordsFeed)
+                .shouldHave(
+                        CollectionCondition.sizeGreaterThan(0)
+                                .because("Не найдено ни одной записи на странице."));
     }
+
 
 }

@@ -1,64 +1,83 @@
 package com.nedorezov.core.pages.groups;
 
 import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.nedorezov.core.BasePage;
+import com.nedorezov.core.pages.group.GroupPage;
+import com.nedorezov.core.pages.groups.elements.GroupCardWrapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-
-import java.util.List;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.nedorezov.core.pages.groups.GroupsPageInfoMessages.*;
 
 public class GroupsPage extends BasePage {
-    private static final By searchGroupField =
+    private static final By SEARCH_GROUP_FIELD =
             By.xpath(".//input[@type='search']");
-    private static final By allGroupsOnRecommendedGroupsPage =
+    private static final By GROUPS_CARDS =
             By.xpath(".//*[@data-l='groupCard,POPULAR_GROUPS.popularTop']");
-    private static final By groupCatalogHeader =
+    private static final By GROUP_CATALOG_HEADER =
             By.xpath(".//*[@class='groups-catalog-header']");
-    private static final By groupCatalog =
+    private static final By GROUP_CATALOG =
             By.xpath(".//*[@class='portlet groups-catalog']");
-    private static final By goToGroupButton =
-            By.xpath(".//*[contains(@class, 'group-main-layer-content_top_ac')]/a[text()='Перейти']");
-    private static final By groupName =
-            By.xpath(".//*[@class='group-detailed-card_name']");
-    private static final By groupPhotoBlock =
-            By.xpath(".//*[@data-l='t,visit']");
+    private static final By USER_GROUPS_BLOCK =
+            By.xpath(".//*[contains(@id, 'UserGroupsBlock')]");
 
 
     public GroupsPage() {
-        super(List.of(groupCatalogHeader, groupCatalog));
+        check();
+    }
+
+    public boolean check() {
+        $(GROUP_CATALOG_HEADER)
+                .shouldBe(visible.because("Не видно хедр каталога групп."));
+        $(GROUP_CATALOG)
+                .shouldBe(visible.because("Не видно каталог групп."));
+        return true;
     }
 
     public String searchForGroup(String groupName) {
-        $(searchGroupField).shouldBe(visible.because(NOT_VISIBLE_GROUP_SEARCH_FIELD))
+        $(SEARCH_GROUP_FIELD).shouldBe(visible.because("Не отображается поле поиска группы."))
                 .setValue(groupName);
-        $(searchGroupField).shouldBe(visible.because(NOT_VISIBLE_GROUP_SEARCH_FIELD))
+        $(SEARCH_GROUP_FIELD).shouldBe(visible.because("Не отображается поле поиска группы."))
                 .sendKeys(Keys.ENTER);
         return getNameOfFirstGroupOnGroupsPage();
     }
 
-    private String getGroupName(SelenideElement group) {
-        return group.find(groupName).shouldBe(visible.because(NOT_VISIBLE_GROUP))
-                .getText();
-    }
-
     public String getNameOfFirstGroupOnGroupsPage() {
-        return getGroupName($$(allGroupsOnRecommendedGroupsPage)
-                .shouldHave(CollectionCondition.sizeGreaterThan(0).because(NOT_FOUND_GROUPS_ON_PAGE))
-                .first().shouldBe(visible.because(NOT_VISIBLE_GROUP)));
+        return getFirstGroupCardWrapper().getGroupName();
     }
 
-    public void navigateToGroup(String groupName) {
-        $$(allGroupsOnRecommendedGroupsPage).findBy(text(groupName)).shouldBe(visible.because(NOT_VISIBLE_GROUP))
-                .find(groupPhotoBlock).shouldBe(visible.because(NOT_VISIBLE_GROUP_PHOTO))
-                .click();
-        $(goToGroupButton).shouldBe(visible.because(NOT_VISIBLE_GO_TO_GROUP_BUTTON)).click();
+    public GroupPage navigateToGroup(String groupName) {
+        return findGroupByName(groupName).
+                clickOnGroupCard().
+                navigateToGroupPage();
+    }
+
+    public ElementsCollection getGroupCardCollection() {
+        return $(USER_GROUPS_BLOCK)
+                .shouldBe(visible.because("Не отображаеься меню с карточками групп."))
+                .$$(GROUPS_CARDS)
+                .shouldHave(CollectionCondition.sizeGreaterThan(0)
+                        .because("Не найдено ни одной группы"));
+    }
+
+
+    public GroupCardWrapper getFirstGroupCardWrapper() {
+        SelenideElement group = getGroupCardCollection()
+                .first()
+                .shouldBe(visible.because("Не отображается группа."));
+        return new GroupCardWrapper(group);
+    }
+
+    public GroupCardWrapper findGroupByName(String groupName) {
+        SelenideElement group = getGroupCardCollection()
+                .findBy(text(groupName))
+                .shouldBe(visible.because("Не отображается группа."));
+        return new GroupCardWrapper(group);
     }
 
 

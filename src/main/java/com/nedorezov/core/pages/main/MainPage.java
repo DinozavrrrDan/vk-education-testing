@@ -1,13 +1,13 @@
 package com.nedorezov.core.pages.main;
 
 import com.nedorezov.core.BasePage;
+import com.nedorezov.core.elements.NavigationMenuWrapper;
+import com.nedorezov.core.pages.groups.GroupsPage;
+import com.nedorezov.core.pages.user.myUser.MyUserPage;
 import org.openqa.selenium.By;
-
-import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.nedorezov.core.pages.main.MainPageInfoMessages.*;
 
 public class MainPage extends BasePage {
 
@@ -15,33 +15,30 @@ public class MainPage extends BasePage {
             By.xpath(".//*[contains(@class, 'main-feed portlet')]");
     private static final By mainPageBlockOfAlternativeContent =
             By.xpath(".//*[contains(@class, 'alternative-content-block')]");
-    private static final By groupsButtonInNavigationBlock =
-            By.xpath(".//*[@data-l='t,userAltGroup' and contains(@class, 'nav-side_i')]");
-    private static final By myUserPageButtonInNavigationBlock =
-            By.xpath(".//*[@data-l='t,userPage' and contains(@class, 'nav-side_i')]");
-    private static final By myUserPageNameInNavigationBlock =
-            By.xpath(".//*[@data-l='t,userPage' and contains(@class, 'nav-side_i')]/div[@class='tico ellip']");
 
-
+    private static final NavigationMenuWrapper navigationBlock = new NavigationMenuWrapper();
     public MainPage() {
-        super(List.of(mainPageFeed, mainPageBlockOfAlternativeContent));
+        check();
     }
 
-    public void openGroupsPageFromNavigationBlock() {
-        $(groupsButtonInNavigationBlock)
-                .shouldBe(visible.because(NOT_VISIBLE_GROUP_BUTTON_ON_NAVIGATION_PANEL))
-                .click();
+    public boolean check() {
+        $(mainPageFeed)
+                .shouldBe(visible.because("Не видно фида."));
+        $(mainPageBlockOfAlternativeContent)
+                .shouldBe(visible.because("Не видно блока альтернативного контента."));
+        return true;
     }
 
-    public void openMyUserPageFromNavigationBlock() {
-        $(myUserPageButtonInNavigationBlock)
-                .shouldBe(visible.because(NOT_VISIBLE_MY_USERNAME_BUTTON_ON_NAVIGATION_PANEL))
-                .click();
+    public String getUserNameFromNavigationMenu() {
+        return navigationBlock.getUserName();
     }
 
-    public String getUserNameFromNavigationBlock() {
-        return $(myUserPageNameInNavigationBlock)
-                .shouldBe(visible.because(NOT_VISIBLE_USERNAME_ON_NAVIGATION_PANEL))
-                .getText();
+    public MyUserPage openMyUserPage() {
+        return navigationBlock.openMyUserPage();
     }
+    public GroupsPage openGroupsPage() {
+        return navigationBlock.openGroupsPage();
+    }
+
+
 }

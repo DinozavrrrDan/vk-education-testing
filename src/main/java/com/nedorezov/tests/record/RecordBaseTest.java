@@ -3,6 +3,7 @@ package com.nedorezov.tests.record;
 import com.codeborne.selenide.Selenide;
 import com.nedorezov.core.pages.login.LoginPage;
 import com.nedorezov.core.pages.main.MainPage;
+import com.nedorezov.core.pages.records.RecordsPage;
 import com.nedorezov.core.pages.user.myUser.MyUserPage;
 import com.nedorezov.tests.BaseTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ public abstract class RecordBaseTest extends BaseTest {
         loginPage.login(LOGIN, PASSWORD);
 
         MainPage mainPage = new MainPage();
-        mainPage.openMyUserPageFromNavigationBlock();
+        mainPage.openMyUserPage();
 
         MyUserPage myUserPage = new MyUserPage();
         myUserPage.navigateToRecordsPage();

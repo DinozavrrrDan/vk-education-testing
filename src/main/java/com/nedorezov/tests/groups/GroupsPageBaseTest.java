@@ -17,6 +17,6 @@ public abstract class GroupsPageBaseTest extends BaseTest {
         loginPage.login(LOGIN, PASSWORD);
 
         MainPage mainPage = new MainPage();
-        mainPage.openGroupsPageFromNavigationBlock();
+        mainPage.openGroupsPage();
     }
 }

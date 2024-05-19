@@ -12,9 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PublishRecordTest extends RecordBaseTest {
 
-    public static final String ASSERTION_FAIL_MESSAGE =
-            "При создании записи ожидаемый и полученный текст записи не совпали.";
-
     @ParameterizedTest(name = "Test publishing new record")
     @ValueSource(strings = {"text1", "текст1"})
     @Tag("records")
@@ -23,7 +20,8 @@ public class PublishRecordTest extends RecordBaseTest {
         RecordsPage recordsPage = new RecordsPage();
         recordsPage.publishRecord(text);
 
-        assertEquals(text, recordsPage.getLastRecordText(), ASSERTION_FAIL_MESSAGE);
+        assertEquals(text, recordsPage.getLastRecordText(),
+                "При создании записи ожидаемый и полученный текст записи не совпали.");
 
         recordsPage.deleteLastRecord();
     }
